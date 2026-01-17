@@ -1,0 +1,65 @@
+{
+  "summary": {
+    "severityBreakdown": {
+      "low": 8,
+      "medium": 5,
+      "high": 2
+    },
+    "actionsTaken": {
+      "autoReduced": 10,
+      "escalated": 3
+    }
+  },
+  "identities": [
+    {
+      "identityId": "ID001",
+      "status": "underReview",
+      "attributes": {
+        "platform": "Okta",
+        "role": "SSO Engineer"
+      }
+    },
+    {
+      "identityId": "ID002",
+      "status": "detected",
+      "attributes": {
+        "platform": "Azure",
+        "role": "IAM Architect"
+      }
+    },
+    {
+      "identityId": "ID003",
+      "status": "validated",
+      "attributes": {
+        "platform": "PingFederate",
+        "role": "SSO Operator"
+      }
+    },
+    {
+      "identityId": "ID004",
+      "status": "validated",
+      "attributes": {
+        "platform": "Forgerock",
+        "role": "Directory Admin"
+      }
+    },
+    {
+      "identityId": "ID005",
+      "status": "underReview",
+      "attributes": {
+        "platform": "Azure",
+        "role": "Firewall Architect"
+      }
+    }
+  ],
+  "policiesApplied": [
+    {
+      "policyId": "POL001",
+      "appliedTo": ["ID001", "ID002", "ID005"]
+    },
+    {
+      "policyId": "POL002",
+      "appliedTo": ["ID002", "ID003", "ID004"]
+    }
+  ]
+}
