@@ -1,0 +1,20 @@
+/* frontend/src/App.css */
+
+/* Root app container */
+.App {
+  text-align: center;
+  min-height: 100vh;
+  background-color: #f9fafb; /* Tailwind gray-50 equivalent */
+}
+
+/* Optional: custom link styling */
+.App-link {
+  color: #2563eb; /* Tailwind blue-600 */
+  text-decoration: none;
+}
+
+.App-link:hover {
+  text-decoration: underline;
+}
+
+/* Remove unused logo spin animation and header styles */
