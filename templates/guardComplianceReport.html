@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>IDShift Guard Compliance Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1, h2 { color: #2c3e50; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+    img { margin: 10px; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+  <h1>IDShift Guard Compliance Report</h1>
+  <p><strong>Version:</strong> Guard v1.0</p>
+  <p><strong>Generated On:</strong> {{timestamp}}</p>
+  <p><strong>Scan Session ID:</strong> {{scanSessionId}}</p>
+
+  <h2>Executive Summary</h2>
+  <table>
+    <tr><th>Total Identities Scanned</th><td>{{summary.totalIdentitiesScanned}}</td></tr>
+    <tr><th>Risk Distribution</th>
+      <td>
+        Human: {{summary.riskDistribution.human}}, 
+        Agentic AI: {{summary.riskDistribution.agenticAI}}, 
+        Bot: {{summary.riskDistribution.bot}}, 
+        Synthetic: {{summary.riskDistribution.synthetic}}, 
+        Compromised: {{summary.riskDistribution.compromised}}, 
+        Unknown: {{summary.riskDistribution.unknown}}
+      </td>
+    </tr>
+    <tr><th>Severity Breakdown</th>
+      <td>
+        Low: {{summary.severityBreakdown.low}}, 
+        Medium: {{summary.severityBreakdown.medium}}, 
+        High: {{summary.severityBreakdown.high}}, 
+        Critical: {{summary.severityBreakdown.critical}}
+      </td>
+    </tr>
+    <tr><th>Actions Taken</th>
+      <td>
+        AutoReduced: {{summary.actionsTaken.autoReduced}}, 
+        Escalated: {{summary.actionsTaken.escalated}}, 
+        Blocked: {{summary.actionsTaken.blocked}}, 
+        ReportOnly: {{summary.actionsTaken.reportOnly}}
+      </td>
+    </tr>
+  </table>
+
+  <h2>Visual Charts</h2>
+  <p>Severity Breakdown:</p>
+  <img src="severity_chart.png" alt="Severity Breakdown Pie Chart" width="300">
+  <p>Risk Distribution:</p>
+  <img src="risk_distribution.png" alt="Risk Distribution Bar Chart" width="400">
+
+  <h2>Identity Risk Details</h2>
+  {{#each identities}}
+  <h3>Identity: {{identityId}}</h3>
+  <ul>
+    <li>Type: {{identityType}}</li>
+    <li>Platform: {{attributes.platform}}</li>
+    <li>Risk Score: {{attributes.riskScore}}</li>
+    <li>Risk Category: {{attributes.riskCategory}}</li>
+    <li>Evidence: {{attributes.evidence}}</li>
+    <li>Severity: {{severity}}</li>
+    <li>Status: {{status}}</li>
+  </ul>
+  {{/each}}
+
+  <h2>Policies Applied</h2>
+  {{#each policiesApplied}}
+  <p><strong>{{name}}</strong><br>
+  Description: {{description}}<br>
+  Applied To: {{appliedTo}}<br>
+  Action: {{action}}<br>
+  Tier: {{tier}}</p>
+  {{/each}}
+
+  <h2>Remediation Actions</h2>
+  {{#each reduceActions}}
+  <p>Action ID: {{actionId}}<br>
+  Identity ID: {{identityId}}<br>
+  Action Type: {{actionType}}<br>
+  Result: {{result}}<br>
+  Timestamp: {{timestamp}}<br>
+  Details: {{details}}</p>
+  {{/each}}
+
+  <h2>Audit Log</h2>
+  {{#each auditLog}}
+  <p>Log ID: {{logId}}<br>
+  Event: {{event}}<br>
+  Identity ID: {{identityId}}<br>
+  Actor: {{actor}}<br>
+  Timestamp: {{timestamp}}<br>
+  Notes: {{notes}}</p>
+  {{/each}}
+</body>
+</html>

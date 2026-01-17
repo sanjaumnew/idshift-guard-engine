@@ -1,0 +1,50 @@
+name: Guard Engine Security
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 3 * * 0'   # Weekly run (Sunday at 3 AM UTC)
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        pip install safety bandit jsonschema
+
+    # Dependency vulnerability scan
+    - name: Safety check (Python dependencies)
+      run: safety check --full-report
+
+    # Static security analysis
+    - name: Bandit scan (Python code security)
+      run: bandit -r pipeline/ scripts/
+
+    # Schema linting for Guard™ JSON definitions
+    - name: Lint Guard schemas
+      run: |
+        for file in schema/*.json; do
+          echo "🔍 Linting $$file"
+          jsonschema -i $$file schema/guardSchema.json || exit 1
+        done
+
+    - name: Upload security reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: guard-security-reports
+        path: |
+          bandit.json
+          safety.json

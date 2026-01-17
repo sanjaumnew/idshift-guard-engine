@@ -1,0 +1,70 @@
+{
+  "scanSessionId": "TEST-SESSION-001",
+  "timestamp": "2026-01-14T19:00:00Z",
+  "summary": {
+    "totalIdentitiesScanned": 6,
+    "riskDistribution": {
+      "human": 2,
+      "agenticAI": 1,
+      "bot": 1,
+      "synthetic": 1,
+      "compromised": 1,
+      "unknown": 0
+    },
+    "severityBreakdown": {
+      "low": 2,
+      "medium": 2,
+      "high": 1,
+      "critical": 1
+    },
+    "actionsTaken": {
+      "autoReduced": 2,
+      "escalated": 1,
+      "blocked": 1,
+      "reportOnly": 2
+    }
+  },
+  "identities": [
+    {
+      "identityId": "user-001",
+      "identityType": "human",
+      "attributes": {
+        "platform": "Windows",
+        "riskScore": 42,
+        "riskCategory": "credential reuse",
+        "evidence": "password reused across 3 domains"
+      },
+      "severity": "medium",
+      "status": "autoReduced"
+    }
+  ],
+  "policiesApplied": [
+    {
+      "name": "Credential Hygiene",
+      "description": "Detects reused or weak credentials",
+      "appliedTo": "user-001",
+      "action": "autoReduced",
+      "tier": "standard"
+    }
+  ],
+  "reduceActions": [
+    {
+      "actionId": "reduce-001",
+      "identityId": "user-001",
+      "actionType": "password reset",
+      "result": "success",
+      "timestamp": "2026-01-14T19:01:00Z",
+      "details": "Password reset triggered via policy"
+    }
+  ],
+  "auditLog": [
+    {
+      "logId": "audit-001",
+      "event": "policyApplied",
+      "identityId": "user-001",
+      "actor": "GuardEngine",
+      "timestamp": "2026-01-14T19:01:30Z",
+      "notes": "Policy applied successfully"
+    }
+  ]
+}

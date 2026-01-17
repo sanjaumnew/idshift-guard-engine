@@ -1,0 +1,44 @@
+name: Guard Engine CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  guard-ci:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        pip install jinja2 pdfkit matplotlib jsonschema
+        sudo apt-get install -y wkhtmltopdf
+
+    # Run Makefile targets instead of individual scripts
+    - name: Validate schemas and templates
+      run: make validate
+
+    - name: Generate compliance reports
+      run: make report
+
+    - name: Run demo workflow
+      run: make demo
+
+    - name: Validate cluster mappings
+      run: make cluster-map
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: guard-compliance-report
+        path: reports/*.json

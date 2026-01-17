@@ -1,0 +1,57 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage{longtable}
+\geometry{margin=1in}
+
+\begin{document}
+
+\title{IDShift Guard Compliance Report}
+\author{Guard v1.0}
+\date{Generated On: {{timestamp}}}
+\maketitle
+
+\section*{Executive Summary}
+\begin{itemize}
+  \item Total Identities Scanned: {{summary.totalIdentitiesScanned}}
+  \item Risk Distribution: Human {{summary.riskDistribution.human}}, Agentic AI {{summary.riskDistribution.agenticAI}}, Bot {{summary.riskDistribution.bot}}, Synthetic {{summary.riskDistribution.synthetic}}, Compromised {{summary.riskDistribution.compromised}}, Unknown {{summary.riskDistribution.unknown}}
+  \item Severity Breakdown: Low {{summary.severityBreakdown.low}}, Medium {{summary.severityBreakdown.medium}}, High {{summary.severityBreakdown.high}}, Critical {{summary.severityBreakdown.critical}}
+  \item Actions Taken: AutoReduced {{summary.actionsTaken.autoReduced}}, Escalated {{summary.actionsTaken.escalated}}, Blocked {{summary.actionsTaken.blocked}}, ReportOnly {{summary.actionsTaken.reportOnly}}
+\end{itemize}
+
+\section*{Identity Risk Details}
+\begin{longtable}{|l|l|}
+\hline
+Identity ID & {{identityId}} \\ \hline
+Type & {{identityType}} \\ \hline
+Platform & {{attributes.platform}} \\ \hline
+Risk Score & {{attributes.riskScore}} \\ \hline
+Risk Category & {{attributes.riskCategory}} \\ \hline
+Evidence & {{attributes.evidence}} \\ \hline
+Severity & {{severity}} \\ \hline
+Status & {{status}} \\ \hline
+\end{longtable}
+
+\section*{Policies Applied}
+Policy Name: {{name}} \\
+Description: {{description}} \\
+Applied To: {{appliedTo}} \\
+Action: {{action}} \\
+Tier: {{tier}}
+
+\section*{Remediation Actions}
+Action ID: {{actionId}} \\
+Identity ID: {{identityId}} \\
+Action Type: {{actionType}} \\
+Result: {{result}} \\
+Timestamp: {{timestamp}} \\
+Details: {{details}}
+
+\section*{Audit Log}
+Log ID: {{logId}} \\
+Event: {{event}} \\
+Identity ID: {{identityId}} \\
+Actor: {{actor}} \\
+Timestamp: {{timestamp}} \\
+Notes: {{notes}}
+
+\end{document}

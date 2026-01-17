@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IDShift Guard Schema",
+  "description": "Validation schema for Guard module aggregating SCAN and Reduce outputs.",
+  "type": "object",
+  "properties": {
+    "guardVersion": { "type": "string" },
+    "scanSessionId": { "type": "string", "description": "UUID of the SCAN session" },
+    "timestamp": { "type": "string", "format": "date-time" },
+
+    "identities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "identityId": { "type": "string" },
+          "identityType": {
+            "type": "string",
+            "enum": ["human", "agenticAI", "bot", "synthetic", "compromised", "unknown"]
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "username": { "type": "string" },
+              "email": { "type": "string" },
+              "accountId": { "type": "string" },
+              "platform": {
+                "type": "string",
+                "enum": ["GitHub", "Slack", "Roblox", "EnterpriseApp", "Other"]
+              },
+              "riskScore": { "type": "integer", "minimum": 0, "maximum": 100 },
+              "riskCategory": {
+                "type": "string",
+                "enum": ["credentialLeak", "impersonation", "automation", "anomaly", "complianceViolation"]
+              },
+              "evidence": { "type": "array", "items": { "type": "string" } }
+            },
+            "required": ["username", "platform", "riskScore", "riskCategory"]
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["low", "medium", "high", "critical"]
+          },
+          "status": {
+            "type": "string",
+            "enum": ["detected", "underReview", "remediated", "escalated"]
+          }
+        },
+        "required": ["identityId", "identityType", "attributes", "severity", "status"]
+      }
+    },
+
+    "policiesApplied": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "policyId": { "type": "string" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "appliedTo": { "type": "array", "items": { "type": "string" } },
+          "action": {
+            "type": "string",
+            "enum": ["escalate", "autoReduce", "notify", "block"]
+          },
+          "tier": { "type": "string", "enum": ["free", "premium"] }
+        },
+        "required": ["policyId", "name", "action", "tier"]
+      }
+    },
+
+    "reduceActions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "actionId": { "type": "string" },
+          "identityId": { "type": "string" },
+          "actionType": {
+            "type": "string",
+            "enum": ["disableAccount", "notifyAdmin", "quarantine", "reportOnly"]
+          },
+          "result": { "type": "string", "enum": ["success", "failed", "pending"] },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "details": { "type": "string" }
+        },
+        "required": ["actionId", "identityId", "actionType", "result", "timestamp"]
+      }
+    },
+
+    "auditLog": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "logId": { "type": "string" },
+          "event": {
+            "type": "string",
+            "enum": ["policyApplied", "remediationTriggered", "exportGenerated"]
+          },
+          "identityId": { "type": "string" },
+          "actor": { "type": "string", "enum": ["system", "adminUser"] },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "notes": { "type": "string" }
+        },
+        "required": ["logId", "event", "actor", "timestamp"]
+      }
+    },
+
+    "summary": {
+      "type": "object",
+      "properties": {
+        "totalIdentitiesScanned": { "type": "integer", "minimum": 0 },
+        "riskDistribution": {
+          "type": "object",
+          "properties": {
+            "human": { "type": "integer", "minimum": 0 },
+            "agenticAI": { "type": "integer", "minimum": 0 },
+            "bot": { "type": "integer", "minimum": 0 },
+            "synthetic": { "type": "integer", "minimum": 0 },
+            "compromised": { "type": "integer", "minimum": 0 },
+            "unknown": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "severityBreakdown": {
+          "type": "object",
+          "properties": {
+            "low": { "type": "integer", "minimum": 0 },
+            "medium": { "type": "integer", "minimum": 0 },
+            "high": { "type": "integer", "minimum": 0 },
+            "critical": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "actionsTaken": {
+          "type": "object",
+          "properties": {
+            "autoReduced": { "type": "integer", "minimum": 0 },
+            "escalated": { "type": "integer", "minimum": 0 },
+            "blocked": { "type": "integer", "minimum": 0 },
+            "reportOnly": { "type": "integer", "minimum": 0 }
+          }
+        }
+      },
+      "required": ["totalIdentitiesScanned", "riskDistribution", "severityBreakdown", "actionsTaken"]
+    }
+  },
+  "required": ["guardVersion", "scanSessionId", "timestamp", "identities", "policiesApplied", "reduceActions", "auditLog", "summary"]
+}

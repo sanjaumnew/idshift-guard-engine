@@ -1,0 +1,51 @@
+name: Guard Engine Release
+
+on:
+  workflow_dispatch:        # Manual trigger
+  push:
+    tags:
+      - 'v*'                # Trigger on version tags like v1.0, v1.1
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        pip install jinja2 pdfkit matplotlib jsonschema
+        sudo apt-get install -y wkhtmltopdf
+
+    # Use Makefile targets for consistency
+    - name: Validate schemas and templates
+      run: make validate
+
+    - name: Generate compliance reports
+      run: make report
+
+    - name: Run demo workflow
+      run: make demo
+
+    - name: Validate cluster mappings
+      run: make cluster-map
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          reports/*.json
+          pipeline/guardComplianceReport.pdf
+          pipeline/guardComplianceReport.html
+          pipeline/guardComplianceReport.md
+          pipeline/severity_chart.png
+          pipeline/risk_distribution.png
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

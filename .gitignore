@@ -1,0 +1,45 @@
+# System/editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*.log
+
+# Dependencies
+node_modules/
+.venv/
+__pycache__/
+
+# Build & test outputs
+dist/
+build/
+coverage/
+.pytest_cache/
+
+# Guard module structure
+# Track schemas and templates, ignore generated outputs
+schemas/*.json
+templates/**/*.json
+
+# Always keep onboarding docs and contributor guides
+!schemas/README.md
+!templates/**/README.md
+!schemas/CONTRIBUTORS.md
+!templates/**/CONTRIBUTORS.md
+
+# CI/CD and automation configs (always tracked)
+!Makefile
+!.github/workflows/*
+!.gitlab-ci.yml
+!.azure-pipelines.yml
+
+# Ignore rendered reports and pipeline outputs
+reports/
+outputs/
+pipeline_logs/
+*.tmp
+*.bak
+
+# Secrets & configs
+.env
+*.key
+*.pem
