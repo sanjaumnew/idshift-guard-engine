@@ -4,18 +4,17 @@ import './App.css';
 
 function App() {
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [schema, setSchema] = useState(null);
 
   useEffect(() => {
     const load = async () => {
       try {
-        const res = await fetch('/data/guardSchema.json', { cache: 'no-store' });
+        const res = await fetch(`${process.env.PUBLIC_URL}/data/guardSchema.json`, { cache: 'no-store' });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();
         setSchema(json);
       } catch (e) {
-        setError(`Failed to load GuardSchema: ${e.message}`);
+        console.log("Schema not found — loading Landing Page only");
       } finally {
         setLoading(false);
       }
@@ -36,8 +35,10 @@ function App() {
   }, [schema]);
 
   const graphData = useMemo(() => {
-    const identities = schema?.identities || [];
-    const policies = schema?.policiesApplied || [];
+    if (!schema) return { nodes: [], links: [] };
+
+    const identities = schema.identities || [];
+    const policies = schema.policiesApplied || [];
     const platforms = new Map();
 
     identities.forEach(i => {
@@ -66,24 +67,13 @@ function App() {
     return { nodes, links };
   }, [schema]);
 
-  if (loading) {
-    return <div className="max-w-5xl mx-auto mt-8 p-4">Loading audit-ready visuals…</div>;
-  }
-
-  if (error) {
-    return (
-      <div className="max-w-5xl mx-auto mt-8 p-4 bg-red-50 border border-red-200 rounded">
-        {error}
-      </div>
-    );
-  }
-
+  // Always render Landing Page
   return (
     <div className="App">
       <LandingPage
         dashboardData={dashboardData}
         graphData={graphData}
-        identities={schema.identities || []}
+        identities={schema?.identities || []}
       />
     </div>
   );

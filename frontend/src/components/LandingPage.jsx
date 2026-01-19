@@ -6,37 +6,70 @@ import ValidationDashboard from './ValidationDashboard';
 import ClusterZoneMap from './ClusterZoneMap';
 import RoleExplorer from './RoleExplorer';
 
-const LandingPage = ({ dashboardData = { validated: 0, exceptions: 0, pending: 0 }, graphData = { nodes: [], links: [] }, identities = [] }) => {
+const LandingPage = ({
+  dashboardData = { validated: 0, exceptions: 0, pending: 0 },
+  graphData = { nodes: [], links: [] },
+  identities = []
+}) => {
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Top navigation */}
+    <div className="min-h-screen bg-slate-50 text-slate-900">
+
+      {/* Top Navigation */}
       <Navbar />
 
-      {/* Hero section */}
+      {/* Hero Section */}
       <HeroBanner />
 
-      {/* Main analytics content */}
-      <main className="max-w-5xl mx-auto mt-8 space-y-6">
-        <ValidationDashboard data={dashboardData} />
+      {/* Main Content */}
+      <main className="max-w-6xl mx-auto px-6 py-12 space-y-10">
 
-        {/* Guard against undefined graphData */}
-        {graphData?.nodes && graphData?.links ? (
-          <ClusterZoneMap nodes={graphData.nodes} links={graphData.links} />
-        ) : (
-          <div className="p-4 bg-yellow-50 border border-yellow-200 rounded">
-            Graph data not available yet…
-          </div>
-        )}
+        {/* Validation Dashboard */}
+        <section className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <h2 className="text-xl font-semibold mb-4">
+            Identity Risk Validation Summary
+          </h2>
+          <ValidationDashboard data={dashboardData} />
+        </section>
 
-        {/* Guard against undefined identities */}
-        {identities?.length ? (
-          <RoleExplorer identities={identities} />
-        ) : (
-          <div className="p-4 bg-gray-100 border border-gray-200 rounded">
-            No identities loaded yet…
-          </div>
-        )}
+        {/* Cluster Zone Map */}
+        <section className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <h2 className="text-xl font-semibold mb-4">
+            Cross-Platform Identity Risk Clusters
+          </h2>
+
+          {graphData?.nodes?.length ? (
+            <ClusterZoneMap nodes={graphData.nodes} links={graphData.links} />
+          ) : (
+            <div className="text-slate-500 text-sm">
+              Interactive risk map will appear once data is connected.
+            </div>
+          )}
+        </section>
+
+        {/* Role Explorer */}
+        <section className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <h2 className="text-xl font-semibold mb-4">
+            Identity Role Explorer
+          </h2>
+
+          {identities?.length ? (
+            <RoleExplorer identities={identities} />
+          ) : (
+            <div className="text-slate-500 text-sm">
+              Connect identity sources to explore role relationships.
+            </div>
+          )}
+        </section>
+
       </main>
+
+      {/* Footer */}
+      <footer className="bg-slate-900 text-slate-400 text-sm">
+        <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center gap-3 text-center md:text-left">
+          <span>© {new Date().getFullYear()} IDShift — Guard Platform</span>
+          <span>Cloud Identity Risk Intelligence</span>
+        </div>
+      </footer>
     </div>
   );
 };
